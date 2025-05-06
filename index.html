@@ -1,15 +1,58 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8">
   <title>Tebak Pintar</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 30px; background-color: #f0f8ff; }
-    .question-box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: inline-block; }
-    .answers button { display: block; margin: 10px auto; padding: 10px 20px; border-radius: 5px; border: none; background-color: #e0e0e0; cursor: pointer; }
-    .answers button:hover { background-color: #d0d0d0; }
-    #score { margin-top: 10px; font-weight: bold; }
-    #lives { margin-top: 10px; font-weight: bold; color: red; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #4facfe, #00f2fe);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .question-box {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 600px;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #fff;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .answers button:hover {
+      background-color: #ddd;
+    }
+    #score, #lives {
+      margin-top: 15px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -20,105 +63,52 @@
     <div id="lives"></div>
     <div id="score"></div>
   </div>
-
   <script>
     const questions = [
       { question: "Apa ibu kota Indonesia?", options: ["Bandung", "Surabaya", "Jakarta", "Medan"], answer: 2 },
       { question: "Berapakah hasil dari 7 x 6?", options: ["36", "42", "40", "48"], answer: 1 },
-      { question: "Apa unsur kimia dengan simbol O?", options: ["Oksigen", "Osmium", "Emas", "Oganesson"], answer: 0 },
-      { question: "Hewan pemakan tumbuhan disebut?", options: ["Karnivora", "Herbivora", "Omnivora", "Insektivora"], answer: 1 },
-      { question: "Benda cair contohnya?", options: ["Es", "Besi", "Minyak", "Plastik"], answer: 2 },
-      { question: "Apa alat musik dari Jawa Barat?", options: ["Gamelan", "Angklung", "Sasando", "Kolintang"], answer: 1 },
-      { question: "Berapakah 100 dibagi 4?", options: ["20", "25", "30", "35"], answer: 1 },
-      { question: "Satuan panjang adalah?", options: ["Kilogram", "Liter", "Meter", "Detik"], answer: 2 },
-      { question: "Planet ketiga dari Matahari?", options: ["Mars", "Venus", "Bumi", "Saturnus"], answer: 2 },
-      { question: "Bahasa resmi negara Indonesia?", options: ["Melayu", "Indonesia", "Jawa", "Sunda"], answer: 1 },
-      { question: "Simbol air dalam kimia?", options: ["HO", "OH", "H2O", "H2O2"], answer: 2 },
-      { question: "Hewan bertelur disebut?", options: ["Vivipar", "Ovipar", "Ovovivipar", "Mamalia"], answer: 1 },
-      { question: "Apa warna primer?", options: ["Merah, Kuning, Biru", "Hijau, Ungu, Orange", "Merah, Putih, Biru", "Coklat, Hitam, Abu"], answer: 0 },
-      { question: "Benda langit yang memancarkan cahaya sendiri?", options: ["Bulan", "Matahari", "Bintang", "Meteor"], answer: 2 },
-      { question: "Sifat air?", options: ["Mengalir ke atas", "Tidak berubah bentuk", "Mengikuti bentuk wadahnya", "Tetap bentuknya"], answer: 2 },
-      { question: "Hewan berdarah panas?", options: ["Ikan", "Burung", "Katak", "Reptil"], answer: 1 },
-      { question: "Indera penciuman?", options: ["Mata", "Telinga", "Hidung", "Lidah"], answer: 2 },
-      { question: "Contoh sumber energi terbarukan?", options: ["Batu bara", "Minyak bumi", "Gas alam", "Matahari"], answer: 3 },
-      { question: "Jenis puisi lama?", options: ["Syair", "Puisi bebas", "Prosa", "Cerpen"], answer: 0 },
-      { question: "Simbol listrik?", options: ["V", "A", "Ω", "Semua benar"], answer: 3 },
-      { question: "Ibukota Jawa Tengah?", options: ["Semarang", "Solo", "Magelang", "Purwokerto"], answer: 0 },
-      { question: "Binatang malam disebut?", options: ["Herbivora", "Nocturnal", "Diurnal", "Karnivora"], answer: 1 },
-      { question: "Wujud air saat beku?", options: ["Uap", "Air", "Es", "Kabut"], answer: 2 },
-      { question: "Bahasa Inggris dari 'buku'?", options: ["Book", "Box", "Back", "Bank"], answer: 0 },
-      { question: "Berapa hasil 15 + 20?", options: ["30", "35", "25", "40"], answer: 1 },
-      { question: "Negara dengan piramida terkenal?", options: ["Indonesia", "Peru", "Mesir", "India"], answer: 2 },
-      { question: "Nama presiden pertama Indonesia?", options: ["Soekarno", "Soeharto", "Habibie", "Megawati"], answer: 0 },
-      { question: "Gunung tertinggi di Indonesia?", options: ["Merapi", "Semeru", "Jayawijaya", "Rinjani"], answer: 2 },
-      { question: "Benda cair bila dibekukan jadi?", options: ["Gas", "Uap", "Es", "Air"], answer: 2 },
-      { question: "Simbol matematika penjumlahan?", options: ["-", "+", "/", "*"], answer: 1 },
-      { question: "Bagian tumbuhan yang menyerap air?", options: ["Daun", "Batang", "Akar", "Bunga"], answer: 2 },
-      { question: "Bentuk bangun dengan tiga sisi?", options: ["Segiempat", "Segitiga", "Segilima", "Lingkaran"], answer: 1 },
-      { question: "Manusia bernapas dengan?", options: ["Insang", "Paru-paru", "Kulit", "Hidung"], answer: 1 },
-      { question: "Binatang bertulang belakang disebut?", options: ["Vertebrata", "Avertebrata", "Invertebrata", "Mamalia"], answer: 0 },
-      { question: "Apa nama alat untuk mengukur suhu?", options: ["Barometer", "Termometer", "Altimeter", "Higrometer"], answer: 1 },
-      { question: "Hewan berkaki dua contohnya?", options: ["Kucing", "Ayam", "Kuda", "Sapi"], answer: 1 },
-      { question: "Nama pulau terbesar di Indonesia?", options: ["Jawa", "Sumatera", "Kalimantan", "Sulawesi"], answer: 2 },
-      { question: "Bulan ke-12 dalam kalender masehi?", options: ["Oktober", "November", "Desember", "Januari"], answer: 2 },
-      { question: "Ibukota Kalimantan Timur?", options: ["Balikpapan", "Samarinda", "Banjarmasin", "Pontianak"], answer: 1 },
-      { question: "Lambang sila pertama Pancasila?", options: ["Bintang", "Rantai", "Pohon", "Banteng"], answer: 0 },
-      { question: "Alat musik tiup tradisional Papua?", options: ["Angklung", "Suling", "Fuu", "Tifa"], answer: 2 },
-      { question: "Nama organ untuk mendengar?", options: ["Mata", "Telinga", "Hidung", "Kulit"], answer: 1 },
-      { question: "Bilangan genap pertama?", options: ["1", "2", "0", "4"], answer: 2 },
-      { question: "Simbol kimia dari emas?", options: ["Ag", "Au", "Fe", "Cu"], answer: 1 },
-      { question: "Nama mata uang Jepang?", options: ["Rupiah", "Yen", "Won", "Dollar"], answer: 1 },
-      { question: "Manfaat sinar matahari pagi?", options: ["Vitamin C", "Vitamin D", "Vitamin A", "Vitamin B"], answer: 1 },
-      { question: "Apa nama ilmiah air?", options: ["H2O", "CO2", "NaCl", "O2"], answer: 0 },
-      { question: "Negara dengan Menara Eiffel?", options: ["Jerman", "Prancis", "Italia", "Belgia"], answer: 1 },
-      { question: "Kota pelajar di Indonesia?", options: ["Bandung", "Surabaya", "Yogyakarta", "Semarang"], answer: 2 }
-    ];
+      // Tambahkan soal lainnya di sini...
+    ];let current = 0;
+let score = 0;
+let lives = 3;
 
-    let current = 0;
-    let score = 0;
-    let lives = 5;
+function showQuestion() {
+  if (lives <= 0 || current >= questions.length) {
+    document.getElementById("question").innerText = "Permainan Selesai!";
+    document.getElementById("answers").innerHTML = "";
+    document.getElementById("lives").innerText = "Nyawa habis atau soal habis.";
+    document.getElementById("score").innerText = `Skor akhir: ${score}/${questions.length}`;
+    return;
+  }
 
-    function showQuestion() {
-      if (lives <= 0) {
-        document.getElementById("question").innerText = "Game Over!";
-        document.getElementById("answers").innerHTML = "";
-        document.getElementById("lives").innerText = "Nyawa habis!";
-        document.getElementById("score").innerText = `Skor akhir: ${score}/${questions.length}`;
-        return;
-      }
-      const q = questions[current];
-      document.getElementById("question").innerText = `Level ${current + 1}: ${q.question}`;
-      document.getElementById("lives").innerText = `Nyawa: ${lives}`;
-      const answersDiv = document.getElementById("answers");
-      answersDiv.innerHTML = "";
-      q.options.forEach((opt, i) => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
-        btn.onclick = () => checkAnswer(i);
-        answersDiv.appendChild(btn);
-      });
-    }
+  const q = questions[current];
+  document.getElementById("question").innerText = q.question;
+  const answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
 
-    function checkAnswer(selected) {
-      if (selected === questions[current].answer) {
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.onclick = () => {
+      if (idx === q.answer) {
         score++;
         alert("Benar!");
       } else {
         lives--;
-        alert("Salah! Nyawa berkurang 1.");
+        alert("Salah!");
       }
       current++;
-      if (current < questions.length && lives > 0) {
-        showQuestion();
-      } else {
-        document.getElementById("question").innerText = lives <= 0 ? "Game Over!" : "Permainan selesai!";
-        document.getElementById("answers").innerHTML = "";
-        document.getElementById("lives").innerText = `Nyawa: ${lives}`;
-        document.getElementById("score").innerText = `Skor akhir: ${score}/${questions.length}`;
-      }
-    }
+      showQuestion();
+    };
+    answersDiv.appendChild(btn);
+  });
 
-    showQuestion();
+  document.getElementById("lives").innerText = `Nyawa: ${lives}`;
+  document.getElementById("score").innerText = `Skor: ${score}`;
+}
+
+showQuestion();
+
   </script>
 </body>
 </html>
